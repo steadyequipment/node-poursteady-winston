@@ -111,19 +111,6 @@ const transportOptions = {
             colorize: false,
             formatter: logColorFormatter
         })
-    },
-
-    createCloudwatch(name, errorHandler) {
-        return this.createSpecific({
-            name: function() {
-                return "Cloudwatch '" + this.logStreamName + "'";
-            },
-            level: 'info',
-            awsRegion: 'us-east-1',
-            logGroupName: name,
-            logStreamName: 'default',
-            errorHandler: errorHandler
-        });
     }
 };
 

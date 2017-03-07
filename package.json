@@ -28,7 +28,6 @@
     "lodash.isboolean": "^3.0.3",
     "lodash.isfunction": "^3.0.8",
     "stack-trace": "0.0.9",
-    "winston": "^2.3.0",
-    "winston-cloudwatch": "^1.7.0"
+    "winston": "^2.3.0"
   }
 }

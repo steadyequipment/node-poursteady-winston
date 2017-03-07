@@ -10,10 +10,6 @@ var _winston = require('winston');
 
 var _winston2 = _interopRequireDefault(_winston);
 
-var _winstonCloudwatch = require('winston-cloudwatch');
-
-var _winstonCloudwatch2 = _interopRequireDefault(_winstonCloudwatch);
-
 var _utility = require('./utility');
 
 var _utility2 = _interopRequireDefault(_utility);
@@ -51,8 +47,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 // TODO: file?
 // TODO: coloring
 
-// TODO: better cloudwatchTransportOptionsify getting shared instance rather than new for all imports
-
 var Logger = function () {
 
     ///
@@ -61,20 +55,12 @@ var Logger = function () {
     //  outputFolder : string,  
     //  outputFileName : string
     // }
-    function Logger(config, cloudwatchOptions /*optional*/, writeStartup) {
+    function Logger(config, writeStartup) {
         _classCallCheck(this, Logger);
-
-        if ((0, _lodash4.default)(cloudwatchOptions)) {
-
-            writeStartup = cloudwatchOptions;
-            cloudwatchOptions = undefined;
-        }
 
         this.config = (0, _lodash6.default)({
             consoleLevel: "info"
         }, config);
-
-        this.winstonCloudwatchMissingCredentialsSpam = false;
 
         this.transports = [];
 
@@ -103,15 +89,6 @@ var Logger = function () {
             var jsonFileOptions = _utility2.default.transportOptions.createJSONFile(outputFolderPath, this.outputFileName);
             var addedJsonFileMessage = this.createAndAddTransport(_winston2.default.transports.File, jsonFileOptions);
             loggingToDisplayNames.push(addedJsonFileMessage);
-        }
-
-        if (cloudwatchOptions && cloudwatchOptions.enabled) {
-
-            var errorHandler = this.winstonCloudwatchErrorHandler.bind(this);
-
-            var options = _utility2.default.transportOptions.createCloudwatch(this.name, errorHandler);
-            var addedMessage = this.createAndAddTransport(_winstonCloudwatch2.default, options);
-            loggingToDisplayNames.push(addedMessage);
         }
 
         this.internalLogger = new _winston2.default.Logger({
@@ -152,28 +129,6 @@ var Logger = function () {
             }
 
             return name + " <= " + options.level;
-        }
-    }, {
-        key: 'winstonCloudwatchErrorHandler',
-        value: function winstonCloudwatchErrorHandler(error) {
-
-            if (error.message === "Missing credentials in config") {
-                if (this.winstonCloudwatchMissingCredentialsSpam === true) {
-                    return;
-                }
-
-                this.winstonCloudwatchMissingCredentialsSpam = true;
-            }
-
-            if (this.transports) {
-                this.transports.forEach(function (transport) {
-                    if (transport.name != 'CloudWatch') {
-                        transport.log('error', "Cloudwatch: " + error.message, null, function () {});
-                    }
-                });
-            } else {
-                console.log("Error: Cloudwatch:", error.message);
-            }
         }
     }, {
         key: 'error',
@@ -285,9 +240,9 @@ var Logger = function () {
         }
     }], [{
         key: 'setupSharedInstance',
-        value: function setupSharedInstance(config, cloudwatchOptions) {
+        value: function setupSharedInstance(config, writeStartup) {
             if (!Logger._sharedInstance) {
-                Logger._sharedInstance = new Logger(config, cloudwatchOptions);
+                Logger._sharedInstance = new Logger(config, writeStartup);
             } else {
                 Logger._sharedInstance.error("Skipping attempt to create additional Logger");
             }
