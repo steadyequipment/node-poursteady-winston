@@ -2,7 +2,6 @@ import winston from 'winston';
 import utility from './utility';
 
 import isFunction from 'lodash.isfunction';
-import isBoolean from 'lodash.isboolean';
 import defaults from 'lodash.defaults';
 
 import path from 'path';
@@ -19,7 +18,7 @@ class Logger {
     ///
     // config : {
     //  consoleLevel : string (verbose, debug, info, warning, error),
-    //  outputFolder : string,  
+    //  outputFolder : string,
     //  outputFileName : string
     // }
     constructor(config, writeStartup) {
@@ -78,7 +77,7 @@ class Logger {
 
     get name() {
         const { name } = this.config;
-        
+
         if (!name) {
             return "module";
         }
@@ -104,7 +103,7 @@ class Logger {
     get outputFileName() {
 
         const { outputFileName } = this.config;
-        
+
         if (!outputFileName) {
             return this.name;
         }

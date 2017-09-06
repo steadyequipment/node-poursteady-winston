@@ -37,16 +37,17 @@ var logLevels = {
 var logFormatter = function logFormatter(options) {
 
     var message = options.message || "";
-    var metaString = function (meta) {
-
-        var result;
-        if (meta && Object.keys(meta).length > 0) {
-            result = "\n\t" + JSON.stringify(meta, null, 2);
-        } else {
-            result = "";
-        }
-        return result;
-    }(options.meta);
+    // const metaString = (meta => {
+    //
+    //     var result;
+    //     if (meta && Object.keys(meta).length > 0) {
+    //         result = "\n\t" + JSON.stringify(meta, null, 2);
+    //     } else {
+    //         result = "";
+    //     }
+    //     return result;
+    //
+    // })(options.meta);
 
     var stack = getStack(10);
 

@@ -23,17 +23,17 @@ const logLevels = {
 const logFormatter = (options) => {
 
     const message = options.message || "";
-    const metaString = (meta => {
-
-        var result;
-        if (meta && Object.keys(meta).length > 0) {
-            result = "\n\t" + JSON.stringify(meta, null, 2);
-        } else {
-            result = "";
-        }
-        return result;
-
-    })(options.meta);
+    // const metaString = (meta => {
+    //
+    //     var result;
+    //     if (meta && Object.keys(meta).length > 0) {
+    //         result = "\n\t" + JSON.stringify(meta, null, 2);
+    //     } else {
+    //         result = "";
+    //     }
+    //     return result;
+    //
+    // })(options.meta);
 
     const stack = getStack(10);
 
@@ -50,7 +50,7 @@ const logFormatter = (options) => {
 
     return [
         options.timestamp(),
-        options.level.toUpperCase(), 
+        options.level.toUpperCase(),
         fileLocation,
         functionLocation,
         message/*,
@@ -92,7 +92,7 @@ const transportOptions = {
     },
 
     createFile(outputFolderPath, outputFileName) {
-        return this.createSpecific({ 
+        return this.createSpecific({
             name: "file",
             level: 'verbose',
             filename: outputFolderPath + "/" + outputFileName + ".log",

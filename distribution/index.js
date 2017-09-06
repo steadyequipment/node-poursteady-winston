@@ -18,13 +18,9 @@ var _lodash = require('lodash.isfunction');
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _lodash3 = require('lodash.isboolean');
+var _lodash3 = require('lodash.defaults');
 
 var _lodash4 = _interopRequireDefault(_lodash3);
-
-var _lodash5 = require('lodash.defaults');
-
-var _lodash6 = _interopRequireDefault(_lodash5);
 
 var _path = require('path');
 
@@ -52,13 +48,13 @@ var Logger = function () {
     ///
     // config : {
     //  consoleLevel : string (verbose, debug, info, warning, error),
-    //  outputFolder : string,  
+    //  outputFolder : string,
     //  outputFileName : string
     // }
     function Logger(config, writeStartup) {
         _classCallCheck(this, Logger);
 
-        this.config = (0, _lodash6.default)({
+        this.config = (0, _lodash4.default)({
             consoleLevel: "info"
         }, config);
 
