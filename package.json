@@ -1,6 +1,6 @@
 {
   "name": "poursteady-winston",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Poursteady's wrapping around the Node Winston library",
   "main": "distribution/index.js",
   "scripts": {
@@ -10,7 +10,8 @@
     "build": "yarn buildSource; yarn buildFlow",
     "pretest": "yarn build",
     "test": "mocha",
-    "watch": "yarn buildSource -- --watch"
+    "watch": "yarn buildSource -- --watch",
+    "prepublish": "yarn build"
   },
   "author": "Ian Grossberg <ian@poursteady.com>",
   "license": "MIT",
