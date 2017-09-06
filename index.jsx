@@ -1,43 +1,68 @@
-import winston from 'winston';
-import utility from './utility';
+/* @flow */
 
-import isFunction from 'lodash.isfunction';
+import winston from 'winston';
+
+import { LogLevels, LogLevelColors} from './utility';
+import type { LogLevel } from './utility';
+
+import TransportOptions from './transportOptions';
+import type { Options as TransportOptionsOptions } from './transportOptions';
+
 import defaults from 'lodash.defaults';
 
 import path from 'path';
 import fs from 'fs';
 import mkdirp from 'mkdirp';
 
-// 2016-03-30T10:29:32.686-04:00 NOTICE logging.js:223 logFormatter ▶ Blah
-// TODO: function
-// TODO: file?
-// TODO: coloring
+type Config = {
+    name: string;
+
+    appVersion: ?string;
+
+    consoleLevel: LogLevel;
+
+    outputFolder: ?string;
+    outputFileName: ?string;
+};
 
 class Logger {
+    static _sharedInstance: Logger;
 
-    ///
-    // config : {
-    //  consoleLevel : string (verbose, debug, info, warning, error),
-    //  outputFolder : string,
-    //  outputFileName : string
-    // }
-    constructor(config, writeStartup) {
+    config: Config;
 
-        this.config = defaults({
-            consoleLevel: "info"
-        }, config)
+    transports: Array<any>;
+
+    internalLogger: winston.Logger;
+
+    static get DefaultConfig(): Config {
+        return {
+            name: '?',
+
+            appVersion: undefined,
+
+            consoleLevel: 'info',
+
+            outputFolder: undefined,
+            outputFileName: undefined
+        }
+    }
+
+    constructor(config: Config, writeStartup: ?boolean) {
+
+        this.config = defaults(config, Logger.DefaultConfig);
 
         this.transports = [];
 
         let loggingToDisplayNames = [];
 
-        const consoleOptions = utility.transportOptions.createConsole(config.consoleLevel);
+        const consoleOptions = TransportOptions.createConsole(config.consoleLevel);
         const addedConsoleMessage = this.createAndAddTransport(winston.transports.Console, consoleOptions);
         loggingToDisplayNames.push(addedConsoleMessage);
 
         if (this.outputFolder) {
+            const outputFolder = this.outputFolder;
 
-            var outputFolderPath = path.resolve(process.cwd(), this.outputFolder);
+            var outputFolderPath = path.resolve(process.cwd(), outputFolder);
 
             try {
                 fs.statSync(outputFolderPath)
@@ -46,23 +71,23 @@ class Logger {
             }
 
             // TODO: rename previous log file
-            const fileOptions = utility.transportOptions.createFile(outputFolderPath, this.outputFileName);
+            const fileOptions = TransportOptions.createFile(outputFolderPath, this.outputFileName);
             const addedFileMessage = this.createAndAddTransport(winston.transports.File, fileOptions);
             loggingToDisplayNames.push(addedFileMessage);
 
             // TODO: rename previous log file
-            const jsonFileOptions = utility.transportOptions.createJSONFile(outputFolderPath, this.outputFileName);
+            const jsonFileOptions = TransportOptions.createJSONFile(outputFolderPath, this.outputFileName);
             const addedJsonFileMessage = this.createAndAddTransport(winston.transports.File, jsonFileOptions);
             loggingToDisplayNames.push(addedJsonFileMessage);
         }
 
         this.internalLogger = new (winston.Logger)({
-            levels: utility.logLevels.levels,
-            colors: utility.logLevels.colors,
+            levels: LogLevels,
+            colors: LogLevelColors,
             transports: this.transports
         });
 
-        winston.addColors(utility.logLevels.colors);
+        winston.addColors(LogLevelColors);
 
         if (writeStartup) {
             this.writeStartup();
@@ -75,7 +100,7 @@ class Logger {
         this.debug("Logging to:\n" + loggingToDisplayNames.map(name => { return "'" + name + "'"; }).join("\n"));
     }
 
-    get name() {
+    get name(): string {
         const { name } = this.config;
 
         if (!name) {
@@ -85,7 +110,7 @@ class Logger {
         return name;
     }
 
-    get appVersion() {
+    get appVersion(): string {
         const { appVersion } = this.config;
 
         if (!appVersion) {
@@ -95,13 +120,12 @@ class Logger {
         return appVersion;
     }
 
-    get outputFolder() {
+    get outputFolder(): ?string {
         const { outputFolder } = this.config;
         return outputFolder;
     }
 
-    get outputFileName() {
-
+    get outputFileName(): string {
         const { outputFileName } = this.config;
 
         if (!outputFileName) {
@@ -111,11 +135,11 @@ class Logger {
         return outputFileName;
     }
 
-    createAndAddTransport(transportClass, options) {
+    createAndAddTransport(transportClass, options: TransportOptionsOptions): string {
         this.transports.push(new (transportClass) (options));
 
         let name = undefined;
-        if (isFunction(options.name)) {
+        if (typeof options.name === 'function') {
             name = options.name();
         } else {
             name = options.name;
@@ -128,7 +152,7 @@ class Logger {
         return name + " <= " + options.level;
     }
 
-    static setupSharedInstance(config, writeStartup) {
+    static setupSharedInstance(config: Config, writeStartup: ?boolean): Logger {
         if (!Logger._sharedInstance) {
             Logger._sharedInstance = new Logger(config, writeStartup);
         } else {
@@ -138,7 +162,7 @@ class Logger {
         return Logger._sharedInstance;
     }
 
-    static sharedInstance() {
+    static sharedInstance(): Logger {
         return Logger._sharedInstance;
     }
 

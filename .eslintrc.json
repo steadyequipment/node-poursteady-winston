@@ -12,9 +12,11 @@
         "sourceType": "module"
     },
     "plugins": [
+        "flowtype"
     ],
     "extends": [
         "eslint:recommended",
+        "plugin:flowtype/recommended"
     ],
     "rules": {
         "indent": [

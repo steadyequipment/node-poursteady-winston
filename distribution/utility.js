@@ -3,10 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-
-var _lodash = require('lodash.defaults');
-
-var _lodash2 = _interopRequireDefault(_lodash);
+exports.getStack = exports.LogColorFormatter = exports.LogFormatter = exports.LogLevelsInformation = exports.LogLevelColors = exports.LogLevels = undefined;
 
 var _config = require('winston/lib/winston/config');
 
@@ -18,23 +15,28 @@ var _stackTrace2 = _interopRequireDefault(_stackTrace);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var logLevels = {
-    levels: {
-        error: 0,
-        warning: 1,
-        info: 2,
-        debug: 3,
-        verbose: 4
-    }, colors: {
-        error: 'red',
-        warning: 'yellow',
-        info: 'white',
-        debug: 'green',
-        verbose: 'gray'
-    }
+var LogLevels = exports.LogLevels = {
+    error: 0,
+    warning: 1,
+    info: 2,
+    debug: 3,
+    verbose: 4
 };
 
-var logFormatter = function logFormatter(options) {
+var LogLevelColors = exports.LogLevelColors = {
+    error: 'red',
+    warning: 'yellow',
+    info: 'white',
+    debug: 'green',
+    verbose: 'gray'
+};
+
+var LogLevelsInformation = exports.LogLevelsInformation = {
+    levels: LogLevels,
+    colors: LogLevelColors
+};
+
+var LogFormatter = exports.LogFormatter = function LogFormatter(options) {
 
     var message = options.message || "";
     // const metaString = (meta => {
@@ -67,63 +69,15 @@ var logFormatter = function logFormatter(options) {
     ].join(" ▶ ");
 };
 
-var logColorFormatter = function logColorFormatter(options) {
+var LogColorFormatter = exports.LogColorFormatter = function LogColorFormatter(options) {
 
     // Workaround until fixed in winston 2.0
     // https://github.com/winstonjs/winston/issues/603
-    return _config2.default.colorize(options.level, logFormatter(options));
-};
-
-var transportOptions = {
-    default: {
-        timestamp: function timestamp() {
-            return new Date().toISOString();
-        }
-    },
-
-    createSpecific: function createSpecific(options) {
-        return (0, _lodash2.default)(options, this.default);
-    },
-    createConsole: function createConsole(overrideLevel) {
-
-        var level = undefined;
-        if (overrideLevel) {
-            level = overrideLevel;
-        } else {
-            level = 'info';
-        }
-        return this.createSpecific({
-            name: "console",
-            level: level,
-            colorize: true,
-            handleExceptions: true,
-            formatter: logColorFormatter
-        });
-    },
-    createFile: function createFile(outputFolderPath, outputFileName) {
-        return this.createSpecific({
-            name: "file",
-            level: 'verbose',
-            filename: outputFolderPath + "/" + outputFileName + ".log",
-            json: false,
-            colorize: false,
-            formatter: logColorFormatter
-        });
-    },
-    createJSONFile: function createJSONFile(outputFolderPath, outputFileName) {
-        return this.createSpecific({
-            name: "jsonFile",
-            level: 'verbose',
-            filename: outputFolderPath + "/" + outputFileName + ".log.json",
-            json: true,
-            colorize: false,
-            formatter: logColorFormatter
-        });
-    }
+    return _config2.default.colorize(options.level, LogFormatter(options));
 };
 
 // Suggestion from http://stackoverflow.com/a/27074218
-var getStack = function getStack(removeLevels) {
+var getStack = exports.getStack = function getStack(removeLevels) {
     if (removeLevels < 0) {
         removeLevels = 0;
     }
@@ -140,11 +94,9 @@ var getStack = function getStack(removeLevels) {
 };
 
 exports.default = {
-    logLevels: logLevels,
-    logFormatter: logFormatter,
-    logColorFormatter: logColorFormatter,
-
-    transportOptions: transportOptions,
+    LogLevelsInformation: LogLevelsInformation,
+    LogFormatter: LogFormatter,
+    LogColorFormatter: LogColorFormatter,
 
     getStack: getStack
 };

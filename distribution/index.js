@@ -12,15 +12,13 @@ var _winston2 = _interopRequireDefault(_winston);
 
 var _utility = require('./utility');
 
-var _utility2 = _interopRequireDefault(_utility);
+var _transportOptions = require('./transportOptions.jsx');
 
-var _lodash = require('lodash.isfunction');
+var _transportOptions2 = _interopRequireDefault(_transportOptions);
+
+var _lodash = require('lodash.defaults');
 
 var _lodash2 = _interopRequireDefault(_lodash);
-
-var _lodash3 = require('lodash.defaults');
-
-var _lodash4 = _interopRequireDefault(_lodash3);
 
 var _path = require('path');
 
@@ -38,37 +36,40 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-// 2016-03-30T10:29:32.686-04:00 NOTICE logging.js:223 logFormatter ▶ Blah
-// TODO: function
-// TODO: file?
-// TODO: coloring
-
 var Logger = function () {
+    _createClass(Logger, null, [{
+        key: 'DefaultConfig',
+        get: function get() {
+            return {
+                name: '?',
 
-    ///
-    // config : {
-    //  consoleLevel : string (verbose, debug, info, warning, error),
-    //  outputFolder : string,
-    //  outputFileName : string
-    // }
+                appVersion: undefined,
+
+                consoleLevel: 'info',
+
+                outputFolder: undefined,
+                outputFileName: undefined
+            };
+        }
+    }]);
+
     function Logger(config, writeStartup) {
         _classCallCheck(this, Logger);
 
-        this.config = (0, _lodash4.default)({
-            consoleLevel: "info"
-        }, config);
+        this.config = (0, _lodash2.default)(config, Logger.DefaultConfig);
 
         this.transports = [];
 
         var loggingToDisplayNames = [];
 
-        var consoleOptions = _utility2.default.transportOptions.createConsole(config.consoleLevel);
+        var consoleOptions = _transportOptions2.default.createConsole(config.consoleLevel);
         var addedConsoleMessage = this.createAndAddTransport(_winston2.default.transports.Console, consoleOptions);
         loggingToDisplayNames.push(addedConsoleMessage);
 
         if (this.outputFolder) {
+            var _outputFolder = this.outputFolder;
 
-            var outputFolderPath = _path2.default.resolve(process.cwd(), this.outputFolder);
+            var outputFolderPath = _path2.default.resolve(process.cwd(), _outputFolder);
 
             try {
                 _fs2.default.statSync(outputFolderPath);
@@ -77,23 +78,23 @@ var Logger = function () {
             }
 
             // TODO: rename previous log file
-            var fileOptions = _utility2.default.transportOptions.createFile(outputFolderPath, this.outputFileName);
+            var fileOptions = _transportOptions2.default.createFile(outputFolderPath, this.outputFileName);
             var addedFileMessage = this.createAndAddTransport(_winston2.default.transports.File, fileOptions);
             loggingToDisplayNames.push(addedFileMessage);
 
             // TODO: rename previous log file
-            var jsonFileOptions = _utility2.default.transportOptions.createJSONFile(outputFolderPath, this.outputFileName);
+            var jsonFileOptions = _transportOptions2.default.createJSONFile(outputFolderPath, this.outputFileName);
             var addedJsonFileMessage = this.createAndAddTransport(_winston2.default.transports.File, jsonFileOptions);
             loggingToDisplayNames.push(addedJsonFileMessage);
         }
 
         this.internalLogger = new _winston2.default.Logger({
-            levels: _utility2.default.logLevels.levels,
-            colors: _utility2.default.logLevels.colors,
+            levels: _utility.LogLevels,
+            colors: _utility.LogLevelColors,
             transports: this.transports
         });
 
-        _winston2.default.addColors(_utility2.default.logLevels.colors);
+        _winston2.default.addColors(_utility.LogLevelColors);
 
         if (writeStartup) {
             this.writeStartup();
@@ -114,7 +115,7 @@ var Logger = function () {
             this.transports.push(new transportClass(options));
 
             var name = undefined;
-            if ((0, _lodash2.default)(options.name)) {
+            if (typeof options.name === 'function') {
                 name = options.name();
             } else {
                 name = options.name;

@@ -22,14 +22,15 @@
     "babel-cli": "^6.18.0",
     "babel-eslint": "^7.2.3",
     "babel-preset-es2015": "^6.18.0",
+    "babel-preset-flow": "^6.23.0",
     "babel-preset-stage-0": "^6.16.0",
     "eslint": "^4.6.1",
     "eslint-plugin-flowtype": "^2.35.1",
+    "flow-bin": "^0.54.0"
   },
   "dependencies": {
     "lodash.defaults": "^4.2.0",
     "lodash.isboolean": "^3.0.3",
-    "lodash.isfunction": "^3.0.8",
     "stack-trace": "0.0.9",
     "winston": "^2.3.0"
   }
