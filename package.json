@@ -8,9 +8,9 @@
     "buildSource": "babel source --out-dir distribution",
     "buildFlow": "flow-copy-source source distribution",
     "build": "yarn buildSource; yarn buildFlow",
+    "watch": "yarn buildSource -- --watch",
     "pretest": "yarn build",
     "test": "mocha",
-    "watch": "yarn buildSource -- --watch",
     "prepublish": "yarn build"
   },
   "author": "Ian Grossberg <ian@poursteady.com>",
