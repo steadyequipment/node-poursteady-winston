@@ -4,6 +4,7 @@ import winston from 'winston';
 
 import { LogLevels, LogLevelColors} from './utility';
 import type { LogLevel } from './utility';
+export type { LogLevel };
 
 import TransportOptions from './transportOptions';
 import type { Options as TransportOptionsOptions } from './transportOptions';
