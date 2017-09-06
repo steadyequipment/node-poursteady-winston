@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _utility = require('./utility.jsx');
+var _utility = require('./utility');
 
 var _lodash = require('lodash.defaults');
 
@@ -16,7 +16,8 @@ exports.default = {
     default: {
         timestamp: function timestamp() {
             return new Date().toISOString();
-        }
+        },
+        formatter: _utility.LogColorFormatter
     },
 
     createSpecific: function createSpecific(options) {
@@ -34,8 +35,7 @@ exports.default = {
             name: "console",
             level: level,
             colorize: true,
-            handleExceptions: true,
-            formatter: _utility.LogColorFormatter
+            handleExceptions: true
         });
     },
     createFile: function createFile(outputFolderPath, outputFileName) {
@@ -44,8 +44,7 @@ exports.default = {
             level: 'verbose',
             filename: outputFolderPath + "/" + outputFileName + ".log",
             json: false,
-            colorize: false,
-            formatter: _utility.LogColorFormatter
+            colorize: false
         });
     },
     createJSONFile: function createJSONFile(outputFolderPath, outputFileName) {
@@ -54,8 +53,7 @@ exports.default = {
             level: 'verbose',
             filename: outputFolderPath + "/" + outputFileName + ".log.json",
             json: true,
-            colorize: false,
-            formatter: _utility.LogColorFormatter
+            colorize: false
         });
     }
 };

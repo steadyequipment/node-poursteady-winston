@@ -80,8 +80,6 @@ export const LogColorFormatter = (options: Options): any => {
     return winstonConfig.colorize(options.level, LogFormatter(options));
 };
 
-
-
 // Suggestion from http://stackoverflow.com/a/27074218
 export const getStack = (removeLevels: number): Array<any> => {
     if (removeLevels < 0) {

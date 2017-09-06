@@ -25,7 +25,7 @@ type Config = {
     outputFileName: ?string;
 };
 
-class Logger {
+export class Logger {
     static _sharedInstance: Logger;
 
     config: Config;
@@ -102,11 +102,6 @@ class Logger {
 
     get name(): string {
         const { name } = this.config;
-
-        if (!name) {
-            return "module";
-        }
-
         return name;
     }
 
@@ -135,7 +130,7 @@ class Logger {
         return outputFileName;
     }
 
-    createAndAddTransport(transportClass, options: TransportOptionsOptions): string {
+    createAndAddTransport(transportClass: Class<any>, options: TransportOptionsOptions): string {
         this.transports.push(new (transportClass) (options));
 
         let name = undefined;
@@ -146,7 +141,7 @@ class Logger {
         }
 
         if (!name) {
-            name = "Added transport class '" + transportClass + "'";
+            name = "Added transport class '" + transportClass.toString() + "'";
         }
 
         return name + " <= " + options.level;
@@ -162,35 +157,36 @@ class Logger {
         return Logger._sharedInstance;
     }
 
+    // TODO: change to get property
     static sharedInstance(): Logger {
         return Logger._sharedInstance;
     }
 
-    error(...args) {
+    error(...args: Array<any>) {
         args.unshift("error");
 
         this.internalLogger.log.apply(this.internalLogger, args);
     }
 
-    warning(...args) {
+    warning(...args: Array<any>) {
         args.unshift("warning");
 
         this.internalLogger.log.apply(this.internalLogger, args);
     }
 
-    info(...args) {
+    info(...args: Array<any>) {
         args.unshift("info");
 
         this.internalLogger.log.apply(this.internalLogger, args);
     }
 
-    debug(...args) {
+    debug(...args: Array<any>) {
         args.unshift("debug");
 
         this.internalLogger.log.apply(this.internalLogger, args);
     }
 
-    verbose(...args) {
+    verbose(...args: Array<any>) {
         args.unshift("verbose");
 
         this.internalLogger.log.apply(this.internalLogger, args);

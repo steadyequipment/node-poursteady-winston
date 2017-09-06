@@ -3,6 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.Logger = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -12,7 +13,7 @@ var _winston2 = _interopRequireDefault(_winston);
 
 var _utility = require('./utility');
 
-var _transportOptions = require('./transportOptions.jsx');
+var _transportOptions = require('./transportOptions');
 
 var _transportOptions2 = _interopRequireDefault(_transportOptions);
 
@@ -36,7 +37,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Logger = function () {
+var Logger = exports.Logger = function () {
     _createClass(Logger, null, [{
         key: 'DefaultConfig',
         get: function get() {
@@ -122,7 +123,7 @@ var Logger = function () {
             }
 
             if (!name) {
-                name = "Added transport class '" + transportClass + "'";
+                name = "Added transport class '" + transportClass.toString() + "'";
             }
 
             return name + " <= " + options.level;
@@ -197,11 +198,6 @@ var Logger = function () {
         get: function get() {
             var name = this.config.name;
 
-
-            if (!name) {
-                return "module";
-            }
-
             return name;
         }
     }, {
@@ -246,6 +242,9 @@ var Logger = function () {
 
             return Logger._sharedInstance;
         }
+
+        // TODO: change to get property
+
     }, {
         key: 'sharedInstance',
         value: function sharedInstance() {

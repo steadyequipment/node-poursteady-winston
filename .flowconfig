@@ -1,6 +1,9 @@
 [ignore]
+distribution/*
 
 [include]
+source/*.js
+test/*.js
 
 [libs]
 

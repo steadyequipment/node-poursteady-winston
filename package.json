@@ -4,9 +4,12 @@
   "description": "Poursteady's wrapping around the Node Winston library",
   "main": "distribution/index.js",
   "scripts": {
-    "start": "babel-node index.jsx",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel *.jsx --out-dir distribution"
+    "start": "babel-node source/index.js",
+    "buildSource": "babel source --out-dir distribution",
+    "buildFlow": "flow-copy-source source distribution",
+    "build": "yarn buildSource; yarn buildFlow",
+    "pretest": "yarn build",
+    "test": "mocha"
   },
   "author": "Ian Grossberg <ian@poursteady.com>",
   "license": "MIT",
@@ -21,12 +24,15 @@
   "devDependencies": {
     "babel-cli": "^6.18.0",
     "babel-eslint": "^7.2.3",
+    "babel-plugin-transform-flow-strip-types": "^6.22.0",
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-flow": "^6.23.0",
     "babel-preset-stage-0": "^6.16.0",
     "eslint": "^4.6.1",
     "eslint-plugin-flowtype": "^2.35.1",
-    "flow-bin": "^0.54.0"
+    "flow-bin": "^0.54.0",
+    "flow-copy-source": "^1.2.1",
+    "mocha": "^3.5.0"
   },
   "dependencies": {
     "lodash.defaults": "^4.2.0",
