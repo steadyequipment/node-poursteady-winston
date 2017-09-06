@@ -4,7 +4,7 @@
         "es6": true,
         "node": true
     },
-    "extends": "eslint:recommended",
+    "parser": "babel-eslint",
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true
@@ -12,9 +12,10 @@
         "sourceType": "module"
     },
     "plugins": [
-        "react"
     ],
-    "extends": ["eslint:recommended", "plugin:react/recommended"],
+    "extends": [
+        "eslint:recommended",
+    ],
     "rules": {
         "indent": [
             "error",
