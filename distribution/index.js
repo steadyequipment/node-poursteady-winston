@@ -49,7 +49,9 @@ var Logger = exports.Logger = function () {
                 consoleLevel: 'info',
 
                 outputFolder: undefined,
-                outputFileName: undefined
+                outputFileName: undefined,
+
+                exitOnError: false
             };
         }
     }]);
@@ -92,7 +94,8 @@ var Logger = exports.Logger = function () {
         this.internalLogger = new _winston2.default.Logger({
             levels: _utility.LogLevels,
             colors: _utility.LogLevelColors,
-            transports: this.transports
+            transports: this.transports,
+            exitOnError: config.exitOnError
         });
 
         _winston2.default.addColors(_utility.LogLevelColors);
