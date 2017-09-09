@@ -24,6 +24,8 @@ type Config = {
 
     outputFolder: ?string;
     outputFileName: ?string;
+
+    exitOnError: ?boolean;
 };
 
 export class Logger {
@@ -44,7 +46,9 @@ export class Logger {
             consoleLevel: 'info',
 
             outputFolder: undefined,
-            outputFileName: undefined
+            outputFileName: undefined,
+
+            exitOnError: false
         }
     }
 
@@ -85,7 +89,8 @@ export class Logger {
         this.internalLogger = new (winston.Logger)({
             levels: LogLevels,
             colors: LogLevelColors,
-            transports: this.transports
+            transports: this.transports,
+            exitOnError: config.exitOnError
         });
 
         winston.addColors(LogLevelColors);
