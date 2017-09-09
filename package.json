@@ -11,7 +11,7 @@
     "watch": "yarn buildSource -- --watch",
     "pretest": "yarn build",
     "test": "mocha",
-    "prepublish": "yarn build"
+    "prepublish": "yarn test"
   },
   "author": "Ian Grossberg <ian@poursteady.com>",
   "license": "MIT",
