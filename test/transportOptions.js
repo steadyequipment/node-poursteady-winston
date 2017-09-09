@@ -10,6 +10,7 @@ var TransportOptions = require('../distribution/transportOptions.js').default;
 describe('TransportOptions', function() {
     describe('#createSpecific()', function() {
         it('should ensure specific default values are present', function() {
+            // $FlowFixMe
             const testResult = TransportOptions.createSpecific({});
             assert(testResult.timestamp !== undefined);
             assert(testResult.formatter !== undefined);
