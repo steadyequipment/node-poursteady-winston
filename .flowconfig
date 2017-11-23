@@ -1,8 +1,5 @@
-[ignore]
-distribution/*
-
 [include]
-source/*.js
+src/*.js
 test/*.js
 
 [libs]

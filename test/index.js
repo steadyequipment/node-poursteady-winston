@@ -5,7 +5,7 @@ const describe = mocha.describe;
 const it = mocha.it;
 var assert = require('assert');
 
-var Logger = require('../distribution/index.js').default;
+var Logger = require('../dist/index.js').default;
 
 describe('Logger', function() {
     describe('#sharedInstance()', function() {
@@ -25,7 +25,8 @@ describe('Logger', function() {
                 consoleLevel: 'verbose',
 
                 outputFolder: undefined,
-                outputFileName: undefined
+                outputFileName: undefined,
+                exitOnError: false
             });
             assert(testResult !== undefined);
             assert(testResult.name === name);

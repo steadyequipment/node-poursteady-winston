@@ -5,7 +5,7 @@ const describe = mocha.describe;
 const it = mocha.it;
 var assert = require('assert');
 
-var TransportOptions = require('../distribution/transportOptions.js').default;
+var TransportOptions = require('../dist/transportOptions.js').default;
 
 describe('TransportOptions', function() {
     describe('#createSpecific()', function() {
