@@ -1,5 +1,8 @@
 /* @flow */
 
+import { version } from '../package.json';
+export { version };
+
 import winston from 'winston';
 
 import { LogLevels, LogLevelColors} from './utility';
